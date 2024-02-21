@@ -8,9 +8,18 @@ dependencies:
   '@types/diff':
     specifier: ^5.0.9
     version: 5.0.9
+  '@types/snapsvg':
+    specifier: ^0.5.8
+    version: 0.5.8
   diff:
     specifier: ^5.2.0
     version: 5.2.0
+  snapsvg:
+    specifier: ^0.5.1
+    version: 0.5.1
+  snapsvg-cjs:
+    specifier: ^0.0.6
+    version: 0.0.6(eve@0.5.4)
   vue:
     specifier: ^3.4.19
     version: 3.4.19(typescript@5.3.3)
@@ -376,6 +385,16 @@ packages:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
     dev: true
 
+  /@types/mina@0.4.5:
+    resolution: {integrity: sha512-rKJ8aoYqsP9jGtMstbcR8Z75mq0yGXkkFu8581olgRIkpoHCM6UXcpkX1TctknQInTlHE7zV9wkhqdN6fgntpA==}
+    dev: false
+
+  /@types/snapsvg@0.5.8:
+    resolution: {integrity: sha512-pQOX8vkOkXM956ahW7iiSgvDcNd8lSAObrIGZndoaze1dDLwhEQoa2YRHyxmY1r2hvUHntGOhP5XyhF5SPg7Zg==}
+    dependencies:
+      '@types/mina': 0.4.5
+    dev: false
+
   /@vitejs/plugin-vue@5.0.4(vite@5.1.4)(vue@3.4.19):
     resolution: {integrity: sha512-WS3hevEszI6CEVEx28F8RjTX97k3KsrcY6kvTg7+Whm5y3oYvcqzVeGCU3hxSAn4uY2CLCkeokkGKpoctccilQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -554,6 +573,10 @@ packages:
   /estree-walker@2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
 
+  /eve@0.5.4:
+    resolution: {integrity: sha512-aqprQ9MAOh1t66PrHxDFmMXPlgNO6Uv1uqvxmwjprQV50jaQ2RqO7O1neY4PJwC+hMnkyMDphu2AQPOPZdjQog==}
+    dev: false
+
   /fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -641,6 +664,21 @@ packages:
     dependencies:
       lru-cache: 6.0.0
     dev: true
+
+  /snapsvg-cjs@0.0.6(eve@0.5.4):
+    resolution: {integrity: sha512-7NNvoGrc3BQvWz5rWK1DsD5/Vni4STswz5B3JrBADboQWcN8OBVGjYVJFPT5JkUXb2iVnEflZANhufEpEcTHXw==}
+    peerDependencies:
+      eve: ~0.5.1
+    dependencies:
+      eve: 0.5.4
+      snapsvg: 0.5.1
+    dev: false
+
+  /snapsvg@0.5.1:
+    resolution: {integrity: sha512-CjwWYsL7+CCk1vCk9BBKGYS4WJVDfJAOMWU+Zhzf8wf6pAm/xT34wnpaMPAgcgCNkxuU6OkQPPd8wGuRCY9aNw==}
+    dependencies:
+      eve: 0.5.4
+    dev: false
 
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}

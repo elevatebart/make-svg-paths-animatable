@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import * as Diff from "diff";
 import PathMorphers from "./PathMorphers.vue";
+import { path } from "snapsvg-cjs";
 
 const pathA = ref(
   "M17.9146 19.9573L14 18H13C11.3431 18 10 16.6569 10 15V14H14C15.6569 14 17 12.6569 17 11V8H19C20.6569 8 22 9.34315 22 11V15C22 16.6569 20.6569 18 19 18V19.2865C19 19.844 18.4133 20.2066 17.9146 19.9573Z"
@@ -11,10 +12,20 @@ const pathB = ref(
 );
 
 function makePathArray(pathInput: string) {
-  return pathInput
-    .replace(/([a-zA-Z])/g, "\n$1")
-    .split("\n")
-    .slice(1);
+  return (
+    path
+      .toRelative(pathInput)
+      // replace all lines starting with v and h with l
+      .map((line) => {
+        if (line[0] === "v") {
+          return `l0 ${line.slice(1)}`;
+        }
+        if (line[0] === "h") {
+          return `l${line.slice(1)} 0`;
+        }
+        return line.join(" ");
+      })
+  );
 }
 
 function removeNumbers(pathInput: string[]) {
@@ -31,8 +42,8 @@ const arrayB = computed(() => {
 
 const diff = computed(() => {
   return Diff.diffChars(
-    removeNumbers(arrayA.value),
-    removeNumbers(arrayB.value)
+    removeNumbers(arrayA.value).toLowerCase(),
+    removeNumbers(arrayB.value).toLowerCase()
   );
 });
 

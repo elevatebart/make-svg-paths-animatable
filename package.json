@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@types/diff": "^5.0.9",
+    "@types/snapsvg": "^0.5.8",
     "diff": "^5.2.0",
+    "snapsvg": "^0.5.1",
+    "snapsvg-cjs": "^0.0.6",
     "vue": "^3.4.19"
   },
   "devDependencies": {
