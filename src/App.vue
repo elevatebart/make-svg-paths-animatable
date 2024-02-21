@@ -287,6 +287,12 @@ pre {
   padding: 0 1rem;
   border-radius: 5px;
 }
+/* media query for dark mode */
+@media (prefers-color-scheme: dark) {
+  pre {
+    background-color: #333;
+  }
+}
 
 pre > span.line {
   display: block;
