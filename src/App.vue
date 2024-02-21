@@ -155,9 +155,34 @@ const demoState = ref<"A" | "B">("A");
 
 <template>
   <h1>Make 2 SVG paths compatible with SMIL animation</h1>
+  <article class="explain">
+    <p>
+      Have you ever needed to create a SMIL animation where an SVG path morph
+      into another?
+    </p>
+    <p>
+      For that, you need to have the exact same amount of points on the first
+      path and the second.
+    </p>
+    <p>
+      Sometimes whatever comes from figma is missing a few points that could
+      easily be replaced.
+    </p>
+    <p>sometimes it's a matter of rotating some points around.</p>
+    <p>
+      I belive you should need to reach for greensock for such a simple task
+    </p>
+    <p>So here is my take on that:</p>
+  </article>
   <div class="inputs">
-    <textarea v-model="pathA" placeholder="path A" />
-    <textarea v-model="pathB" placeholder="path B" />
+    <div>
+      <label for="pathAInput">Paste your first path here</label>
+      <textarea v-model="pathA" placeholder="path A" id="pathAInput" />
+    </div>
+    <div>
+      <label for="pathBInput">Paste your second path there</label>
+      <textarea v-model="pathB" placeholder="path B" id="pathBInput" />
+    </div>
     <svg
       fill-rule="evenodd"
       height="100"
@@ -191,7 +216,7 @@ const demoState = ref<"A" | "B">("A");
         <span v-for="{line, added } of diffB" class="line" :class="{added}">{{ line }}</span>
       </pre>
     </details>
-
+    <h2>Fixed Paths</h2>
     <pre>
       <span v-for="line of fixedPathA.split('\n').filter(s => s.trim().length > 0)" class="line">{{ line }}</span>
     </pre>
@@ -199,6 +224,7 @@ const demoState = ref<"A" | "B">("A");
       <span v-for="line of fixedPathB.split('\n').filter(s => s.trim().length > 0)" class="line">{{ line }}</span>
     </pre>
   </div>
+  <h2>DEMO</h2>
   <button
     @click="
       () => {
@@ -224,6 +250,23 @@ const demoState = ref<"A" | "B">("A");
 </template>
 
 <style scoped>
+h1 {
+  width: 50rem;
+  margin: auto;
+}
+label {
+  display: block;
+}
+
+.explain {
+  width: 50rem;
+  margin: 2rem;
+}
+.explain p {
+  width: 50rem;
+  text-align: left;
+  margin: 0.2rem auto;
+}
 .inputs {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -240,10 +283,18 @@ pre {
   text-align: left;
   white-space: pre-wrap;
   counter-reset: linecounter;
+  background-color: #eeeeee;
+  padding: 0 1rem;
+  border-radius: 5px;
 }
 
 pre > span.line {
   display: block;
+}
+
+h2 {
+  grid-column: span 2;
+  margin-bottom: 0;
 }
 
 pre > span.line:before {
