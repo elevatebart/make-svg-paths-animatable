@@ -11,7 +11,10 @@ const pathB = ref(
 );
 
 function makePathArray(pathInput: string) {
-  return pathInput.replace(/([a-zA-Z])/g, "\n$1").split("\n");
+  return pathInput
+    .replace(/([a-zA-Z])/g, "\n$1")
+    .split("\n")
+    .slice(1);
 }
 
 function removeNumbers(pathInput: string[]) {
@@ -30,6 +33,60 @@ const diff = computed(() => {
   return Diff.diffChars(
     removeNumbers(arrayA.value),
     removeNumbers(arrayB.value)
+  );
+});
+
+const diffA = computed(() => {
+  let offset = 0;
+  return diff.value.reduce(
+    (acc: Array<{ line: string; removed: boolean }>, part) => {
+      part.value
+        .split("\n")
+        .filter((a) => a.trim().length)
+        .forEach(() => {
+          if (part.removed) {
+            acc.push({
+              line: arrayA.value[offset++],
+              removed: true,
+            });
+          } else if (!part.added) {
+            acc.push({
+              line: arrayA.value[offset++],
+              removed: false,
+            });
+          }
+        });
+
+      return acc;
+    },
+    []
+  );
+});
+
+const diffB = computed(() => {
+  let offset = 0;
+  return diff.value.reduce(
+    (acc: Array<{ line: string; added: boolean }>, part) => {
+      part.value
+        .split("\n")
+        .filter((a) => a.trim().length)
+        .forEach(() => {
+          if (part.added) {
+            acc.push({
+              line: arrayB.value[offset++],
+              added: true,
+            });
+          } else if (!part.removed) {
+            acc.push({
+              line: arrayB.value[offset++],
+              added: false,
+            });
+          }
+        });
+
+      return acc;
+    },
+    []
   );
 });
 
@@ -97,11 +154,10 @@ const demoState = ref<"A" | "B">("A");
 </script>
 
 <template>
+  <h1>Make 2 SVG paths compatible with SMIL animation</h1>
   <div class="inputs">
-    <textarea v-model="pathA" />
-    <textarea v-model="pathB" />
-    <pre>{{ pathA.replace(/([a-zA-Z])/g, "\n$1") }}</pre>
-    <pre>{{ pathB.replace(/([a-zA-Z])/g, "\n$1") }}</pre>
+    <textarea v-model="pathA" placeholder="path A" />
+    <textarea v-model="pathB" placeholder="path B" />
     <svg
       fill-rule="evenodd"
       height="100"
@@ -112,6 +168,7 @@ const demoState = ref<"A" | "B">("A");
     >
       <path :d="pathA" />
     </svg>
+
     <svg
       fill-rule="evenodd"
       height="100"
@@ -122,33 +179,25 @@ const demoState = ref<"A" | "B">("A");
     >
       <path :d="pathB" />
     </svg>
-    <pre>
-        <span v-for="line of fixedPathA.split('\n').filter(s => s.trim().length > 0)" class="line">{{ line }}</span>
+    <details>
+      <summary>formatted path A</summary>
+      <pre>
+        <span v-for="{line, removed } of diffA" class="line" :class="{removed}">{{ line }}</span>
       </pre>
-    <pre>
-        <span v-for="line of fixedPathB.split('\n').filter(s => s.trim().length > 0)" class="line">{{ line }}</span>
+    </details>
+    <details>
+      <summary>formatted path B</summary>
+      <pre>
+        <span v-for="{line, added } of diffB" class="line" :class="{added}">{{ line }}</span>
       </pre>
-    <svg
-      fill-rule="evenodd"
-      height="100"
-      width="100"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="red"
-    >
-      <path :d="fixedPathA" />
-    </svg>
+    </details>
 
-    <svg
-      fill-rule="evenodd"
-      height="100"
-      width="100"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="green"
-    >
-      <path :d="fixedPathB" />
-    </svg>
+    <pre>
+      <span v-for="line of fixedPathA.split('\n').filter(s => s.trim().length > 0)" class="line">{{ line }}</span>
+    </pre>
+    <pre>
+      <span v-for="line of fixedPathB.split('\n').filter(s => s.trim().length > 0)" class="line">{{ line }}</span>
+    </pre>
   </div>
   <button
     @click="
@@ -204,5 +253,11 @@ pre > span.line:before {
   counter-increment: linecounter;
   text-align: right;
   padding-right: 1rem;
+}
+.removed {
+  color: red;
+}
+.added {
+  color: green;
 }
 </style>
